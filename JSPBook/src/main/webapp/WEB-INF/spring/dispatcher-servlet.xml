@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context 
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/mvc 
+           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+           http://mybatis.org/schema/mybatis-spring
+           http://mybatis.org/schema/mybatis-spring-1.2.xsd">
+
+	<!-- 패키지 스캔 (Controller, Service, Mapper 전부 포함) -->
+	<context:component-scan
+		base-package="com.example.jspbook" />
+
+	<!-- Annotation 기반 설정 -->
+	<mvc:annotation-driven />
+
+	<!-- DataSource 설정 -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName"
+			value="com.mysql.cj.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://localhost:3307/board?serverTimezone=Asia/Seoul" />
+		<property name="username" value="buser" />
+		<property name="password" value="buser" />
+	</bean>
+
+	<!-- MyBatis SqlSessionFactory 설정 -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- Mapper XML 위치 -->
+		<property name="mapperLocations"
+			value="classpath:/mapper/*.xml" />
+	</bean>
+
+	<!-- Mapper 인터페이스 자동 스캔 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage"
+			value="com.example.jspbook.mapper" />
+	</bean>
+
+	<!-- ViewResolver 설정 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+</beans>
