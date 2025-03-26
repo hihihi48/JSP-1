@@ -2,39 +2,34 @@ package com.example.jspbook.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.jspbook.mapper.UserMapper;
 import com.example.jspbook.model.User;
 
-@Service
 public class UserService {
 
-	@Autowired
 	private UserMapper userMapper;
 
-	// ÀüÃ¼ À¯Àú ¸ñ·Ï Á¶È¸
+	// ì „ì²´ ìœ ì € ëª©ë¡ ì¡°íšŒ
 	public List<User> getAllUsers() {
 		return userMapper.getAllUsers();
 	}
 
-	// Æ¯Á¤ À¯Àú Á¶È¸
+	// íŠ¹ì • ìœ ì € ì¡°íšŒ
 	public User getUserById(Long userId) {
 		return userMapper.getUserById(userId);
 	}
 
-	// À¯Àú µî·Ï
+	// ìœ ì € ë“±ë¡
 	public void insertUser(User user) {
 		userMapper.insertUser(user);
 	}
 
-	// À¯Àú ¾÷µ¥ÀÌÆ®
+	// ìœ ì € ì—…ë°ì´íŠ¸
 	public void updateUser(User user) {
 		userMapper.updateUser(user);
 	}
 
-	// À¯Àú »èÁ¦
+	// ìœ ì € ì‚­ì œ
 	public void deleteUser(Long userId) {
 		userMapper.deleteUser(userId);
 	}
