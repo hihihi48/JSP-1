@@ -9,6 +9,10 @@ public class UserService {
 
 	private UserMapper userMapper;
 
+	public void setUserMapper(UserMapper userMapper) {
+		this.userMapper = userMapper;
+	}
+
 	// 전체 유저 목록 조회
 	public List<User> getAllUsers() {
 		return userMapper.getAllUsers();

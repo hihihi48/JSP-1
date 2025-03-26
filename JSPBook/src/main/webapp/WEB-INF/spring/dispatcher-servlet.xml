@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="
-           http://www.springframework.org/schema/beans 
-           http://www.springframework.org/schema/beans/spring-beans.xsd
-           http://www.springframework.org/schema/context 
-           http://www.springframework.org/schema/context/spring-context.xsd
-           http://www.springframework.org/schema/mvc 
-           http://www.springframework.org/schema/mvc/spring-mvc.xsd
-           http://mybatis.org/schema/mybatis-spring
-           http://mybatis.org/schema/mybatis-spring-1.2.xsd">
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://mybatis.org/schema/mybatis-spring 
+        http://mybatis.org/schema/mybatis-spring-1.2.xsd">
 
-	<!-- 패키지 스캔 (Controller, Service, Mapper 전부 포함) -->
-	<context:component-scan
-		base-package="com.example.jspbook" />
-
-	<!-- Annotation 기반 설정 -->
-	<mvc:annotation-driven />
-
-	<!-- DataSource 설정 -->
+	<!-- DataSource (DB 연결) 설정 -->
 	<bean id="dataSource"
 		class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName"
@@ -35,15 +28,19 @@
 	<bean id="sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<!-- Mapper XML 위치 -->
-		<property name="mapperLocations"
-			value="classpath:/mapper/*.xml" />
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:/mappers/UserMapper.xml</value>
+			</list>
+		</property>
 	</bean>
 
 	<!-- Mapper 인터페이스 자동 스캔 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage"
 			value="com.example.jspbook.mapper" />
+		<property name="sqlSessionFactoryBeanName"
+			value="sqlSessionFactory" />
 	</bean>
 
 	<!-- ViewResolver 설정 -->
@@ -51,6 +48,37 @@
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- Spring 3.x인 경우 Controller 처리할 어댑터 설정 있어야 됨 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+
+	<!-- URL 매핑 -->
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/users">userController</prop>
+				<prop key="/users/new">userController</prop>
+				<prop key="/users/create">userController</prop>
+				<prop key="/users/edit">userController</prop>
+				<prop key="/users/update">userController</prop>
+				<prop key="/users/delete">userController</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- UserService -->
+	<bean id="userService"
+		class="com.example.jspbook.service.UserService">
+		<property name="userMapper" ref="userMapper" />
+	</bean>
+
+	<!-- UserController -->
+	<bean id="userController"
+		class="com.example.jspbook.controller.UserController">
+		<property name="userService" ref="userService" />
 	</bean>
 
 </beans>
