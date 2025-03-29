@@ -5,41 +5,54 @@
 
 <mapper namespace="com.example.jspbook.mapper.UserMapper">
 
-	<!-- 1. 전체 유저 조회 -->
+	<!-- 전체 유저 조회 -->
 	<select id="getAllUsers"
 		resultType="com.example.jspbook.model.User">
 		SELECT user_id AS userId, username, password, nickname
-		FROM User
+		FROM
+		User
 	</select>
 
-	<!-- 2. 단일 유저 조회 -->
+	<!-- 단일 유저 조회 (유저 기본키로) -->
 	<select id="getUserById" parameterType="long"
 		resultType="com.example.jspbook.model.User">
 		SELECT user_id AS userId, username, password, nickname
-		FROM User
+		FROM
+		User
 		WHERE user_id = #{userId}
 	</select>
 
-	<!-- 3. 유저 추가 -->
+	<select id="findByUsername" parameterType="String"
+		resultType="com.example.jspbook.model.User">
+		SELECT user_id AS userId, username, password, nickname
+		FROM
+		User
+		WHERE username = #{username}
+	</select>
+
+	<!-- 유저 추가 -->
 	<insert id="insertUser"
 		parameterType="com.example.jspbook.model.User">
 		INSERT INTO User (username, password, nickname)
-		VALUES (#{username}, #{password}, #{nickname})
+		VALUES
+		(#{username}, #{password}, #{nickname})
 	</insert>
 
-	<!-- 4. 유저 수정 -->
+	<!-- 유저 수정 -->
 	<update id="updateUser"
 		parameterType="com.example.jspbook.model.User">
 		UPDATE User
 		SET password = #{password},
-		nickname = #{nickname}
+		nickname =
+		#{nickname}
 		WHERE user_id = #{userId}
 	</update>
 
-	<!-- 5. 유저 삭제 -->
+	<!-- 유저 삭제 -->
 	<delete id="deleteUser" parameterType="long">
 		DELETE FROM User
-		WHERE user_id = #{userId}
+		WHERE
+		user_id = #{userId}
 	</delete>
 
 </mapper>

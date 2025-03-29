@@ -54,17 +54,44 @@
 	<bean
 		class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
 
+	<!-- URL 매핑된 컨트롤러 요청 전에 인터셉터 실행 후 JWT 쿠키 유효성 검증 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="jwtInterceptor" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="jwtInterceptor"
+		class="com.example.jspbook.interceptor.JwtInterceptor" />
+
+
 	<!-- URL 매핑 -->
 	<bean
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
 			<props>
+				<!-- 유저 매핑 -->
 				<prop key="/users">userController</prop>
 				<prop key="/users/new">userController</prop>
 				<prop key="/users/create">userController</prop>
 				<prop key="/users/edit">userController</prop>
 				<prop key="/users/update">userController</prop>
 				<prop key="/users/delete">userController</prop>
+
+				<!-- 회원가입 매핑 -->
+				<prop key="/register/form">loginController</prop>
+				<prop key="/register/submit">loginController</prop>
+
+				<!-- 로그인 매핑 -->
+				<prop key="/login">loginController</prop>
+				<prop key="/login/form">loginController</prop>
+				<prop key="/logout">loginController</prop>
+
+				<!-- 게시판 매핑 -->
+				<prop key="/list">boardController</prop>
 			</props>
 		</property>
 	</bean>
@@ -80,5 +107,31 @@
 		class="com.example.jspbook.controller.UserController">
 		<property name="userService" ref="userService" />
 	</bean>
+
+	<!-- LoginController -->
+	<bean id="loginController"
+		class="com.example.jspbook.controller.LoginController">
+		<property name="loginService" ref="loginService" />
+		<property name="userService" ref="userService" />
+	</bean>
+
+	<!-- LoginService -->
+	<bean id="loginService"
+		class="com.example.jspbook.service.LoginService">
+		<property name="userMapper" ref="userMapper" />
+	</bean>
+
+	<!-- BoardService -->
+	<bean id="boardService"
+		class="com.example.jspbook.service.BoardService">
+		<property name="boardMapper" ref="boardMapper" />
+	</bean>
+
+	<!-- BoardController -->
+	<bean id="boardController"
+		class="com.example.jspbook.controller.BoardController">
+		<property name="boardService" ref="boardService" />
+	</bean>
+
 
 </beans>

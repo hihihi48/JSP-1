@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.jspbook.mapper.BoardMapper">
+
+	<select id="getAllBoards"
+		resultType="com.example.jspbook.model.Board">
+		SELECT board_id AS boardId,
+		title,
+		content,
+		writer,
+		created_at AS createdAt
+		updated_at AS updatedAt
+		FROM Board
+		ORDER BY board_id DESC
+	</select>
+
+</mapper>

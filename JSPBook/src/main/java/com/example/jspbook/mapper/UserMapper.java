@@ -9,6 +9,8 @@ public interface UserMapper {
 
 	User getUserById(Long userId);
 
+	User findByUsername(String username);
+
 	void insertUser(User user);
 
 	void updateUser(User user);

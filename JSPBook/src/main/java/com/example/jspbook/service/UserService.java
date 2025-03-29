@@ -23,6 +23,10 @@ public class UserService {
 		return userMapper.getUserById(userId);
 	}
 
+	public User findByUsername(String username) {
+		return userMapper.findByUsername(username);
+	}
+
 	// 유저 등록
 	public void insertUser(User user) {
 		userMapper.insertUser(user);
